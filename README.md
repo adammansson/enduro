@@ -1,2 +1,2 @@
 # enduro
-Time tracking system for enduro races
+Time system for enduro races.
