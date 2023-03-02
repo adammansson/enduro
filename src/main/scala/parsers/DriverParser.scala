@@ -4,17 +4,15 @@ package parsers
 import entries.DriverEntry
 
 import scala.io.Source
+import scala.util.Using
 
 case object DriverParser:
   def parse(filename: String): Vector[DriverEntry] =
-    val source = Source.fromFile(filename)
-    val driverEntries =
+    Using(Source.fromFile(filename))(source =>
       source
         .getLines()
         .toVector
         .drop(1)
-        .map(line => DriverEntry.from(line.split(";").toVector))
-
-    source.close()
-    driverEntries
+        .flatMap(line => DriverEntry.from(line.split(";").toVector))
+    ).get
     
