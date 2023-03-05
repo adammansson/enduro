@@ -1,21 +1,21 @@
 package io.github.adammansson
 package formatters
 
-import entries.ResultEntry
+import matchers.ResultEntry
 
 import java.io.{BufferedWriter, FileWriter}
 import java.time.format.DateTimeFormatter
 
-case object Formatter:
-  private val SEP = "; "
+case object ResultFormatter:
+  private val columnNames = "Number; Name; Total; Start; End"
 
   def format(result: Vector[ResultEntry]): Vector[String] =
-    result.map(re => re.toString)
+    columnNames +: result.map(_.toString)
 
   def write(filename: String, formatted: Vector[String]): Unit =
     val bufferedWriter = new BufferedWriter(new FileWriter(filename))
-    formatted.foreach(line => {
+    formatted.foreach(line =>
       bufferedWriter.write(line)
       bufferedWriter.newLine()
-    })
+    )
     bufferedWriter.close()

@@ -1,8 +1,6 @@
 package io.github.adammansson
 package parsers
 
-import entries.TimeEntry
-
 import scala.io.Source
 import scala.util.{Try, Using}
 

@@ -1,21 +1,23 @@
 package io.github.adammansson
-package entries
+package matchers
 
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.time.{Duration, LocalTime}
 
-case class ResultEntry(number: String, name: String, starts: Vector[String], ends: Vector[String]):
+case class ResultEntry(number: String, name: String, start: String, ends: String, total: String):
   override def toString: String =
     StringBuilder()
       .append(number)
       .append(ResultEntry.SEP)
       .append(name)
       .append(ResultEntry.SEP)
-      .append(starts.mkString(ResultEntry.SEP))
+      .append(start)
       .append(ResultEntry.SEP)
-      .append(ends.mkString(ResultEntry.SEP))
+      .append(ends)
       .append(ResultEntry.SEP)
+      .append(total)
       .toString
 
 case object ResultEntry:
   private val SEP = "; "
+  

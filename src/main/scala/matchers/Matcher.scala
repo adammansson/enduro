@@ -1,42 +1,44 @@
 package io.github.adammansson
 package matchers
 
-import entries.{DriverEntry, ResultEntry, TimeEntry}
+import parsers.{DriverEntry, TimeEntry}
 
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 
-class Matcher:
-  private val driverEntries = ArrayBuffer[DriverEntry]()
-  private val startEntries = ArrayBuffer[TimeEntry]()
-  private val endEntries = ArrayBuffer[TimeEntry]()
-
-  def addDrivers(drivers: Vector[DriverEntry]): Unit =
-    driverEntries.appendAll(drivers)
-
-  def addStarts(starts: Vector[TimeEntry]): Unit =
-    startEntries.appendAll(starts)
-
-  def addEnds(ends: Vector[TimeEntry]): Unit =
-    endEntries.appendAll(ends)
-
-  private def filterStarts(driverEntry: DriverEntry, timeEntries: Vector[TimeEntry]): Vector[String] =
-    timeEntries.filter(_.number == driverEntry.number) match
-      case filtered if filtered.isEmpty => Vector("Start?")
-      case filtered => filtered.map(_.time.format(Matcher.timeFormat))
-
-  private def filterEnds(driverEntry: DriverEntry, timeEntries: Vector[TimeEntry]): Vector[String] =
-    timeEntries.filter(_.number == driverEntry.number) match
-      case filtered if filtered.isEmpty => Vector("Slut?")
-      case filtered => filtered.map(_.time.format(Matcher.timeFormat))
+class Matcher(drivers: Vector[DriverEntry], starts: Vector[TimeEntry], ends: Vector[TimeEntry]):
+  private val numberEntries = mutable.HashMap[Int, NumberEntry]()
 
   def result: Vector[ResultEntry] =
-    driverEntries.toVector.map(driverEntry =>
-      val starts = filterStarts(driverEntry, startEntries.toVector)
-      val ends = filterEnds(driverEntry, endEntries.toVector)
-      ResultEntry(driverEntry.number.toString, driverEntry.name, starts, ends)
+    addDrivers()
+
+    starts.foreach(start =>
+      val numberEntry = numberEntries.get(start.number)
+      numberEntries.put(
+        start.number,
+        NumberEntry(
+          start.number,
+          numberEntry.flatMap(_.name),
+          numberEntry.map(_.starts).getOrElse(Vector()) :+ start.time,
+          numberEntry.map(_.ends).getOrElse(Vector()),
+        )
+      )
     )
 
-object Matcher:
-  private val timeFormat = DateTimeFormatter.ISO_TIME
+    ends.foreach(end =>
+      val numberEntry = numberEntries.get(end.number)
+      numberEntries.put(
+        end.number,
+        NumberEntry(
+          end.number,
+          numberEntry.flatMap(_.name),
+          numberEntry.map(_.starts).getOrElse(Vector()),
+          numberEntry.map(_.ends).getOrElse(Vector()) :+ end.time,
+        )
+      )
+    )
+
+    numberEntries.values.toVector.map(_.format)
+
+  private def addDrivers(): Unit =
+    drivers.foreach(d => numberEntries.put(d.number, NumberEntry(d.number, Some(d.name), Vector(), Vector())))
+    
