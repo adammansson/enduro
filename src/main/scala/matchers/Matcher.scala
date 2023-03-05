@@ -6,16 +6,19 @@ import parsers.{DriverEntry, TimeEntry}
 import scala.collection.mutable
 
 class Matcher(drivers: Vector[DriverEntry], starts: Vector[TimeEntry], ends: Vector[TimeEntry]):
-  private val numberEntries = mutable.HashMap[Int, NumberEntry]()
 
-  def result: Vector[ResultEntry] =
-    addDrivers()
+  def result: Vector[MatcherEntry] =
+    val numberEntries = mutable.HashMap[Int, MatcherEntry]()
+
+    drivers.foreach(driver => 
+      numberEntries.put(driver.number, MatcherEntry(driver.number, Some(driver.name), Vector(), Vector()))
+    )
 
     starts.foreach(start =>
       val numberEntry = numberEntries.get(start.number)
       numberEntries.put(
         start.number,
-        NumberEntry(
+        MatcherEntry(
           start.number,
           numberEntry.flatMap(_.name),
           numberEntry.map(_.starts).getOrElse(Vector()) :+ start.time,
@@ -28,7 +31,7 @@ class Matcher(drivers: Vector[DriverEntry], starts: Vector[TimeEntry], ends: Vec
       val numberEntry = numberEntries.get(end.number)
       numberEntries.put(
         end.number,
-        NumberEntry(
+        MatcherEntry(
           end.number,
           numberEntry.flatMap(_.name),
           numberEntry.map(_.starts).getOrElse(Vector()),
@@ -37,8 +40,7 @@ class Matcher(drivers: Vector[DriverEntry], starts: Vector[TimeEntry], ends: Vec
       )
     )
 
-    numberEntries.values.toVector.map(_.format)
-
-  private def addDrivers(): Unit =
-    drivers.foreach(d => numberEntries.put(d.number, NumberEntry(d.number, Some(d.name), Vector(), Vector())))
-    
+    numberEntries
+      .values
+      .toVector
+      .sortBy(_.number)

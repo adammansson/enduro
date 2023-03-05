@@ -1,23 +1,30 @@
 package io.github.adammansson
 package matchers
 
-import java.time.format.DateTimeFormatter
 import java.time.{Duration, LocalTime}
 
-case class ResultEntry(number: String, name: String, start: String, ends: String, total: String):
-  override def toString: String =
-    StringBuilder()
-      .append(number)
-      .append(ResultEntry.SEP)
-      .append(name)
-      .append(ResultEntry.SEP)
-      .append(start)
-      .append(ResultEntry.SEP)
-      .append(ends)
-      .append(ResultEntry.SEP)
-      .append(total)
-      .toString
+case class ResultEntry(
+                        number: Int,
+                        name: Option[String],
+                        starts: Vector[LocalTime],
+                        ends: Vector[LocalTime],
+                        total: Option[Duration]) extends Ordered[ResultEntry]:
+  override def compare(that: ResultEntry): Int =
+    (total, that.total) match
+      case (Some(myTotal), Some(thatTotal)) => myTotal.compareTo(thatTotal)
+      case _ => number.compareTo(that.number)
 
 case object ResultEntry:
-  private val SEP = "; "
-  
+  def from(numberEntry: MatcherEntry): ResultEntry =
+    val total =
+      if numberEntry.starts.length == 1 && numberEntry.ends.length == 1 then
+        Some(Duration.between(numberEntry.starts(0), numberEntry.ends(0)))
+      else None
+
+    ResultEntry(
+      numberEntry.number,
+      numberEntry.name,
+      numberEntry.starts,
+      numberEntry.ends,
+      total,
+    )

@@ -1,7 +1,6 @@
 package io.github.adammansson
 
 import formatters.EntryFormatter
-import matchers.ResultEntry
 import parsers.{DriverEntry, TimeEntry}
 
 import org.scalatest.funsuite.AnyFunSuite
@@ -31,14 +30,3 @@ class EntriesTest extends AnyFunSuite:
     val testDriverFailure2 = DriverEntry.from(Vector())
     assert(testDriverFailure2.isEmpty)
   )
-
-  test("ResultEntry.toString")(testFun =
-    val number = "1"
-    val name = "Test"
-    val start = "12:00:00"
-    val end = "13:00:00"
-    val total = "1:00:00"
-    val testResult = ResultEntry(number, name, start, end, total)
-    assert(testResult.toString == "1; Test; 12:00:00; 13:00:00; 1:00:00")
-  )
-
