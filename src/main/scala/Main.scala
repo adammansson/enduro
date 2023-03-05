@@ -1,13 +1,12 @@
 package io.github.adammansson
 
-import formatters.ResultFormatter
-import matchers.{Matcher, ResultEntry}
+import formatters.{ResultEntry, ResultFormatter}
+import matchers.Matcher
 import parsers.{DriverParser, TimeParser}
 
 import java.io.File
 
 object Main:
-  private def deleteFile(filename: String): Unit = new File(filename).delete()
   def main(args: Array[String]): Unit =
     val result = Matcher(
       DriverParser.parse("testdata/drivers.txt"),
@@ -20,3 +19,5 @@ object Main:
     ResultFormatter.write(resultFilename, ResultFormatter.format(result))
 
     println(s"RESULT GENERATED -> at $resultFilename")
+
+  private def deleteFile(filename: String): Unit = new File(filename).delete()

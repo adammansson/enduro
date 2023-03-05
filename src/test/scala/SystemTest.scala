@@ -1,8 +1,8 @@
 package io.github.adammansson
 
+import formatters.{ResultEntry, ResultFormatter}
+import matchers.Matcher
 import parsers.{DriverParser, TimeParser}
-import matchers.{Matcher, ResultEntry}
-import formatters.ResultFormatter
 
 import org.scalatest.funsuite.AnyFunSuite
 

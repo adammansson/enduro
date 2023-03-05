@@ -1,5 +1,7 @@
 package io.github.adammansson
-package matchers
+package formatters
+
+import matchers.MatcherEntry
 
 import java.time.{Duration, LocalTime}
 

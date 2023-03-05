@@ -1,7 +1,7 @@
 package io.github.adammansson
 package formatters
 
-import matchers.{MatcherEntry, ResultEntry}
+import matchers.MatcherEntry
 
 import java.io.{BufferedWriter, FileWriter}
 import java.time.format.DateTimeFormatter

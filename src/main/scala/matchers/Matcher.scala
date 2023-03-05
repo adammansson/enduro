@@ -10,7 +10,7 @@ class Matcher(drivers: Vector[DriverEntry], starts: Vector[TimeEntry], ends: Vec
   def result: Vector[MatcherEntry] =
     val numberEntries = mutable.HashMap[Int, MatcherEntry]()
 
-    drivers.foreach(driver => 
+    drivers.foreach(driver =>
       numberEntries.put(driver.number, MatcherEntry(driver.number, Some(driver.name), Vector(), Vector()))
     )
 
