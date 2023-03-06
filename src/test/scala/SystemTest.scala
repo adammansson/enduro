@@ -3,6 +3,7 @@ package io.github.adammansson
 import formatters.{ResultEntry, ResultFormatter}
 import matchers.Matcher
 import parsers.{DriverParser, TimeParser}
+import utils.FileUtils
 
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -11,17 +12,9 @@ import scala.io.Source
 import scala.util.Using
 
 class SystemTest extends AnyFunSuite:
-  private def vectorFromFile(fileName: String): Vector[String] =
-    Using(Source.fromFile(fileName))(source =>
-      source
-        .getLines()
-        .toVector
-    ).get
-
-  private def deleteFile(filename: String): Unit = new File(filename).delete()
 
   test("System")(testFun =
-    val expectedResult = vectorFromFile("testdata/result.expected")
+    val expectedResult = FileUtils.read("testdata/result.expected")
 
     val result = Matcher(
       DriverParser.parse("testdata/drivers.txt"),
@@ -30,11 +23,9 @@ class SystemTest extends AnyFunSuite:
     ).result.map(numberEntry => ResultEntry.from(numberEntry))
 
     val resultFilename = "testdata/result.txt"
-    deleteFile(resultFilename)
-    ResultFormatter.write(resultFilename, ResultFormatter.format(result))
+    FileUtils.deleteFile(resultFilename)
+    FileUtils.write(resultFilename, ResultFormatter.format(result))
 
-    val receivedResult = vectorFromFile(resultFilename)
-    deleteFile(resultFilename)
-
+    val receivedResult = FileUtils.read(resultFilename)
     assert(receivedResult == expectedResult)
   )

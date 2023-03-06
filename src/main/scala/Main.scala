@@ -3,6 +3,7 @@ package io.github.adammansson
 import formatters.{ResultEntry, ResultFormatter}
 import matchers.Matcher
 import parsers.{DriverParser, TimeParser}
+import utils.FileUtils
 
 import java.io.File
 
@@ -15,9 +16,8 @@ object Main:
     ).result.map(numberEntry => ResultEntry.from(numberEntry))
 
     val resultFilename = "testdata/result.txt"
-    deleteFile(resultFilename)
-    ResultFormatter.write(resultFilename, ResultFormatter.format(result))
+    FileUtils.deleteFile(resultFilename)
+    FileUtils.write(resultFilename, ResultFormatter.format(result))
 
-    println(s"RESULT GENERATED -> at $resultFilename")
+    println(s"RESULT GENERATED -> saved at $resultFilename")
 
-  private def deleteFile(filename: String): Unit = new File(filename).delete()

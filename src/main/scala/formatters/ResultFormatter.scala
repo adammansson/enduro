@@ -8,32 +8,28 @@ import java.time.format.DateTimeFormatter
 import scala.collection.mutable.ArrayBuffer
 
 case object ResultFormatter:
-  private val columnNames = "Number; Name; Total; Start; End"
-  private val standingsColumnNames = s"Placement; $columnNames"
+  private val standingsColumnNames = "Placement; Number; Name; Start; End; Total"
+  private val invalidColumnNames = "Number; Name; Start; End; Total; Errors"
 
   def format(result: Vector[ResultEntry]): Vector[String] =
     val formattedLines = ArrayBuffer[String]()
 
-    val validTotals = result.filter(_.total.isDefined)
+    val sortedResult =
+      ResultSorter
+        .sort(result)
+        .map(resultEntry => ResultChecker.check(resultEntry))
+    val entriesWithoutErrors = sortedResult.filter(_.errors.isEmpty)
+
     formattedLines.append("STANDINGS")
     formattedLines.append(standingsColumnNames)
-    val sortedEntries =
-      ResultSorter
-        .sort(validTotals)
+    val standings =
+      entriesWithoutErrors
         .zipWithIndex
-        .map((resultEntry, placement) => s"${placement + 1}; ${EntryFormatter.entry(resultEntry)}")
-    formattedLines.appendAll(sortedEntries)
+        .map((formattedEntry, placement) => s"${placement + 1}; ${formattedEntry.toString}")
+    formattedLines.appendAll(standings)
 
-    formattedLines.append("INVALID TOTALS")
-    formattedLines.append(columnNames)
-    formattedLines.appendAll(result.diff(validTotals).map(resultEntry => EntryFormatter.entry(resultEntry)))
+    formattedLines.append("INVALID")
+    formattedLines.append(invalidColumnNames)
+    formattedLines.appendAll(sortedResult.diff(entriesWithoutErrors).map(_.toString))
 
     formattedLines.toVector
-
-  def write(filename: String, formatted: Vector[String]): Unit =
-    val bufferedWriter = new BufferedWriter(new FileWriter(filename))
-    formatted.foreach(line =>
-      bufferedWriter.write(line)
-      bufferedWriter.newLine()
-    )
-    bufferedWriter.close()

@@ -11,6 +11,7 @@ case class ResultEntry(
                         starts: Vector[LocalTime],
                         ends: Vector[LocalTime],
                         total: Option[Duration]) extends Ordered[ResultEntry]:
+  // TODO: fix weird sorting bug
   override def compare(that: ResultEntry): Int =
     (total, that.total) match
       case (Some(myTotal), Some(thatTotal)) => myTotal.compareTo(thatTotal)
