@@ -13,7 +13,7 @@ object Main:
       DriverParser.parse("testdata/drivers.txt"),
       TimeParser.parse("testdata/start.txt"),
       TimeParser.parse("testdata/end.txt"),
-    ).result.map(numberEntry => ResultEntry.from(numberEntry))
+    ).result.map(matcherEntry => ResultEntry.from(matcherEntry))
 
     val resultFilename = "testdata/result.txt"
     FileUtils.deleteFile(resultFilename)

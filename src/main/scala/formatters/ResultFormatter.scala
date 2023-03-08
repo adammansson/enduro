@@ -8,28 +8,33 @@ import java.time.format.DateTimeFormatter
 import scala.collection.mutable.ArrayBuffer
 
 case object ResultFormatter:
-  private val standingsColumnNames = "Placement; Number; Name; Start; End; Total"
-  private val invalidColumnNames = "Number; Name; Start; End; Total; Errors"
+  val SEP: String = "; "
 
   def format(result: Vector[ResultEntry]): Vector[String] =
+    val standingsColumnNames = "Placement; Number; Name; Start; End; Total"
+    val invalidColumnNames = "Number; Name; Start; End; Total; Errors"
     val formattedLines = ArrayBuffer[String]()
 
-    val sortedResult =
-      ResultSorter
-        .sort(result)
-        .map(resultEntry => ResultChecker.check(resultEntry))
-    val entriesWithoutErrors = sortedResult.filter(_.errors.isEmpty)
-
-    formattedLines.append("STANDINGS")
-    formattedLines.append(standingsColumnNames)
+    val entriesWithoutErrors = result.filter(_.errors.isEmpty)
     val standings =
       entriesWithoutErrors
+        .sorted(Ordering.by(_.total))
+        .map(resultEntry => FormattedEntry.from(resultEntry))
         .zipWithIndex
-        .map((formattedEntry, placement) => s"${placement + 1}; ${formattedEntry.toString}")
-    formattedLines.appendAll(standings)
+        .map((formattedEntry, placement) => s"${placement + 1}$SEP${formattedEntry.toString}")
 
-    formattedLines.append("INVALID")
-    formattedLines.append(invalidColumnNames)
-    formattedLines.appendAll(sortedResult.diff(entriesWithoutErrors).map(_.toString))
+    val entriesWithErrors = result.diff(entriesWithoutErrors)
+    val invalid =
+      entriesWithErrors
+        .sorted(Ordering.by(_.number))
+        .map(resultEntry => FormattedEntry.from(resultEntry))
+        .map(_.toString)
 
-    formattedLines.toVector
+    formattedLines
+      .append("STANDINGS")
+      .append(standingsColumnNames)
+      .appendAll(standings)
+      .append("INVALID")
+      .append(invalidColumnNames)
+      .appendAll(invalid)
+      .toVector

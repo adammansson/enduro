@@ -1,7 +1,7 @@
 package io.github.adammansson
 
-import formatters.EntryFormatter
 import parsers.{DriverEntry, TimeEntry}
+import utils.EnduroTime
 
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -22,7 +22,7 @@ class EntriesTest extends AnyFunSuite:
   test("TimeEntry.from")(testFun =
     val testTimeSuccess = TimeEntry.from(Vector("1", "12:00:00"))
     assert(testTimeSuccess.exists(_.number == 1))
-    assert(testTimeSuccess.exists(_.time == LocalTime.parse("12:00:00", EntryFormatter.timeFormat)))
+    assert(testTimeSuccess.exists(_.time == EnduroTime.parse("12:00:00")))
     val testTimeFailure0 = TimeEntry.from(Vector("2", "12"))
     assert(testTimeFailure0.isEmpty)
     val testTimeFailure1 = TimeEntry.from(Vector("Test", "12:00:00"))

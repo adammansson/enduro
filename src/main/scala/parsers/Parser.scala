@@ -10,6 +10,7 @@ case object Parser:
       source
         .getLines()
         .toVector
+        .drop(1)
         .flatMap(line =>
           if line.startsWith("#") then
             None

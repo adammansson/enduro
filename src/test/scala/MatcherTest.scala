@@ -1,8 +1,9 @@
 package io.github.adammansson
 
-import formatters.{FormattedResultEntry, ResultFormatter}
+import formatters.ResultFormatter
 import matchers.{Matcher, MatcherEntry}
 import parsers.{DriverParser, TimeParser}
+import utils.EnduroTime
 
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -17,22 +18,22 @@ class MatcherTest extends AnyFunSuite:
         TimeParser.parse("testdata/end.txt"),
       ).result
 
-    val numberEntry0 =
+    val matcherEntry0 =
       MatcherEntry(
         1,
         Some("Anders Asson"),
-        Vector(LocalTime.parse("17:33:49")),
-        Vector(LocalTime.parse("18:01:37")),
+        Vector(EnduroTime.parse("17:33:49")),
+        Vector(EnduroTime.parse("18:01:37")),
       )
 
-    val numberEntry3 =
+    val matcherEntry3 =
       MatcherEntry(
         4,
-        Some("David Dsson"),
-        Vector(LocalTime.parse("17:33:40")),
-        Vector(),
+        None,
+        Vector(EnduroTime.parse("17:33:40")),
+        Vector(EnduroTime.parse("18:02:12")),
       )
 
-    assert(result(0) == numberEntry0)
-    assert(result(3) == numberEntry3)
+    assert(result(0) == matcherEntry0)
+    assert(result(3) == matcherEntry3)
   )

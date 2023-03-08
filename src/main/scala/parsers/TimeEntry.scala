@@ -1,13 +1,13 @@
 package io.github.adammansson
 package parsers
 
-import formatters.EntryFormatter
+import utils.EnduroTime
 
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import scala.util.{Failure, Success, Try}
 
-case class TimeEntry(number: Int, time: LocalTime)
+case class TimeEntry(number: Int, time: EnduroTime)
 
 case object TimeEntry:
   def from(xs: Vector[String]): Option[TimeEntry] =
@@ -17,7 +17,7 @@ case object TimeEntry:
       val numberTry = Try(numberOriginal.toInt)
 
       val timeOriginal = xs(1).trim
-      val timeTry = Try(LocalTime.parse(timeOriginal, EntryFormatter.timeFormat))
+      val timeTry = Try(EnduroTime.parse(timeOriginal))
 
       (numberTry, timeTry) match
         case (Success(number), Success(time)) => Some(TimeEntry(number, time))
