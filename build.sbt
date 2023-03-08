@@ -8,4 +8,4 @@ lazy val root = (project in file("."))
     idePackagePrefix := Some("io.github.adammansson")
   )
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.11" % Test
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % Test
