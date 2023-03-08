@@ -6,5 +6,5 @@ import scala.util.Using
 
 case object DriverParser:
   def parse(fileName: String): Vector[DriverEntry] =
-    Parser.parse[DriverEntry](fileName, line => DriverEntry.from(line.split(";").toVector))
+    EntryParser.parse[DriverEntry](fileName, line => DriverEntry.from(line.split(";").toVector))
     

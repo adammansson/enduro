@@ -1,7 +1,7 @@
 package io.github.adammansson
 package formatters
 
-import matchers.MatcherEntry
+import matchers.{MatcherEntry, ResultEntry}
 
 import java.io.{BufferedWriter, FileWriter}
 import java.time.format.DateTimeFormatter
@@ -19,7 +19,7 @@ case object ResultFormatter:
     val standings =
       entriesWithoutErrors
         .sorted(Ordering.by(_.total))
-        .map(resultEntry => FormattedEntry.from(resultEntry))
+        .map(_.convert)
         .zipWithIndex
         .map((formattedEntry, placement) => s"${placement + 1}$SEP${formattedEntry.toString}")
 
@@ -27,7 +27,7 @@ case object ResultFormatter:
     val invalid =
       entriesWithErrors
         .sorted(Ordering.by(_.number))
-        .map(resultEntry => FormattedEntry.from(resultEntry))
+        .map(_.convert)
         .map(_.toString)
 
     formattedLines

@@ -4,8 +4,8 @@ package parsers
 import scala.io.Source
 import scala.util.Using
 
-case object Parser:
-  def parse[A](fileName: String, createEntryFromLine: String => Option[A]): Vector[A] =
+case object EntryParser:
+  def parse[A](fileName: String, entryFromLine: String => Option[A]): Vector[A] =
     Using(Source.fromFile(fileName))(source =>
       source
         .getLines()
@@ -15,7 +15,7 @@ case object Parser:
           if line.startsWith("#") then
             None
           else
-            createEntryFromLine(line)
+            entryFromLine(line)
         )
     ).get
 

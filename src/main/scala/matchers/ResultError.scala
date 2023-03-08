@@ -1,5 +1,5 @@
 package io.github.adammansson
-package formatters
+package matchers
 
 sealed trait ResultError
 

@@ -6,4 +6,4 @@ import scala.util.{Try, Using}
 
 case object TimeParser:
   def parse(fileName: String): Vector[TimeEntry] =
-    Parser.parse[TimeEntry](fileName, line => TimeEntry.from(line.split(";").toVector))
+    EntryParser.parse[TimeEntry](fileName, line => TimeEntry.from(line.split(";").toVector))
