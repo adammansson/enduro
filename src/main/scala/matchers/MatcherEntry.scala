@@ -25,15 +25,18 @@ case class MatcherEntry(
 
     if ends.isEmpty then
       errorsFound.addOne(EndError.NO_END)
-    else if starts.length > 1 then
+    else if ends.length > 1 then
       errorsFound.addOne(EndError.MULTIPLE_ENDS)
 
     val calculatedTotal =
-      if !errorsFound.contains(StartError.NO_START) && !errorsFound.contains(EndError.NO_END) then
-        Some(EnduroDuration.between(starts(0), ends(0)))
-      else
+      if starts.isEmpty || ends.isEmpty then
         errorsFound.addOne(TotalError.NO_TOTAL)
         None
+      else if starts.length > 1 || ends.length > 1 then
+        errorsFound.addOne(TotalError.UNKNOWN_TOTAL)
+        None
+      else
+        Some(EnduroDuration.between(starts(0), ends(0)))
 
     ResultEntry(
       number,

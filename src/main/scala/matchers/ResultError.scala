@@ -16,3 +16,4 @@ enum EndError extends ResultError:
 
 enum TotalError extends ResultError:
   case NO_TOTAL
+  case UNKNOWN_TOTAL
