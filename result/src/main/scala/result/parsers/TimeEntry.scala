@@ -1,6 +1,7 @@
 package result.parsers
 
 import common.utils.EnduroTime
+
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import scala.util.{Failure, Success, Try}

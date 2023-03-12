@@ -1,7 +1,4 @@
-package io.github.adammansson
-
 import common.utils.FileUtils
-
 import org.scalatest.funsuite.AnyFunSuite
 import result.formatters.ResultFormatter
 import result.matchers.{Matcher, ResultEntry}

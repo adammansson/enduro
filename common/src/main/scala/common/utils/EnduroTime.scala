@@ -10,6 +10,6 @@ case class EnduroTime(time: LocalTime):
 case object EnduroTime:
   def parse(text: String): EnduroTime =
     EnduroTime(LocalTime.parse(text, DateTimeFormatter.ISO_LOCAL_TIME))
-    
+
   def now: EnduroTime =
     EnduroTime(LocalTime.now())

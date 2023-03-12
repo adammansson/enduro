@@ -1,20 +1,17 @@
 package result.parsers
 
+import common.utils.FileUtils
+
 import scala.io.Source
 import scala.util.Using
 
-case object EntryParser:
-  def parse[A](fileName: String, entryFromLine: String => Option[A]): Vector[A] =
-    Using(Source.fromFile(fileName))(source =>
-      source
-        .getLines()
-        .toVector
-        .drop(1)
-        .flatMap(line =>
-          if line.startsWith("#") then
-            None
-          else
-            entryFromLine(line)
-        )
-    ).get
+abstract class EntryParser[A]():
+  def parse(fileName: String): Vector[A] =
+    FileUtils.read(fileName)
+      .flatMap(line =>
+        line match
+          case comment if comment.startsWith("#") => None
+          case line => entryFromLine(line)
+      )
 
+  protected def entryFromLine(line: String): Option[A]

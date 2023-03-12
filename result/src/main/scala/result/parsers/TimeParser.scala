@@ -3,6 +3,6 @@ package result.parsers
 import scala.io.Source
 import scala.util.{Try, Using}
 
-case object TimeParser:
-  def parse(fileName: String): Vector[TimeEntry] =
-    EntryParser.parse[TimeEntry](fileName, line => TimeEntry.from(line.split(";").toVector))
+class TimeParser() extends EntryParser[TimeEntry]:
+  override protected def entryFromLine(line: String): Option[TimeEntry] =
+    TimeEntry.from(line.split(";").toVector)
