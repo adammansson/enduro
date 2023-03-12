@@ -1,0 +1,11 @@
+STANDINGS
+Placement; Number; Name; Start; End; Total
+1; 2; Bengt Bsson; 17:33:46; 18:00:40; 00:26:54; 
+2; 1; Anders Asson; 17:33:49; 18:01:37; 00:27:48; 
+3; 3; Chris Csson; 17:33:44; 18:01:43; 00:27:59; 
+INVALID
+Number; Name; Start; End; Total; Errors
+4; <NO_NAME>; 17:33:40; <MULTIPLE_ENDS>; <UNKNOWN_TOTAL>; [NO_NAME; MULTIPLE_ENDS; UNKNOWN_TOTAL]
+5; Erik Esson; <NO_START>; <MULTIPLE_ENDS>; <NO_TOTAL>; [NO_START; MULTIPLE_ENDS; NO_TOTAL]
+6; Fredrik Fransson; 16:34:01; <NO_END>; <NO_TOTAL>; [NO_END; NO_TOTAL]
+7; <NO_NAME>; 17:34:01; 18:02:35; 00:28:34; [NO_NAME]
