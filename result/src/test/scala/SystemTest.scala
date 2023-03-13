@@ -14,9 +14,9 @@ class SystemTest extends AnyFunSuite:
     val expectedResult = FileUtils.read("testdata/result.expected")
 
     val result = Matcher(
-      DriverParser.parse("testdata/drivers.txt"),
-      TimeParser.parse("testdata/start.txt"),
-      TimeParser.parse("testdata/end.txt"),
+      DriverParser().parse("testdata/drivers.txt"),
+      TimeParser().parse("testdata/start.txt"),
+      TimeParser().parse("testdata/end.txt"),
     ).result.map(_.convert)
 
     val resultFileName = "testdata/result.txt"

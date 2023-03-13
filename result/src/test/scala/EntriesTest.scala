@@ -1,5 +1,4 @@
-package io.github.adammansson
-
+import common.utils.EnduroTime
 import org.scalatest.funsuite.AnyFunSuite
 import result.parsers.{DriverEntry, TimeEntry}
 

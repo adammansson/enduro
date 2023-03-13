@@ -5,7 +5,7 @@ Placement; Number; Name; Start; End; Total
 3; 3; Chris Csson; 17:33:44; 18:01:43; 00:27:59; 
 INVALID
 Number; Name; Start; End; Total; Errors
-4; <NO_NAME>; 17:33:40; 18:02:12; 00:28:32; [NO_NAME]
-5; Erik Esson; <NO_START>; 18:01:49; <NO_TOTAL>; [NO_START; NO_TOTAL]
+4; <NO_NAME>; 17:33:40; <MULTIPLE_ENDS>; <UNKNOWN_TOTAL>; [NO_NAME; MULTIPLE_ENDS; UNKNOWN_TOTAL]
+5; Erik Esson; <NO_START>; <MULTIPLE_ENDS>; <NO_TOTAL>; [NO_START; MULTIPLE_ENDS; NO_TOTAL]
 6; Fredrik Fransson; 16:34:01; <NO_END>; <NO_TOTAL>; [NO_END; NO_TOTAL]
 7; <NO_NAME>; 17:34:01; 18:02:35; 00:28:34; [NO_NAME]
